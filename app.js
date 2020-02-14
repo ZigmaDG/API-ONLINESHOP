@@ -6,10 +6,12 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 
-// Ejecutar express
+// run express
 var app = express();
 
-// Cargar ficheros rutas
+// load routes file
+
+var item_routes = require('./routes/item');
 
 // Middlewares
 
@@ -18,18 +20,21 @@ app.use(bodyParser.json());
 
 // CORS
 
-// Añadir prefijos a rutas
+
+
+app.use((req,res,next) =>{
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+    res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+    next();
+});
+
+// Add prefix to routes
+
+app.use('/api', item_routes);
 
 //Exportar modulo
-app.get('/probando',(req,res) =>{
 
-
-
-    return res.status(200).send({
-        empresa: 'Tienda de cosas',
-        autor: 'Guillermo Ramos',
-        url: 'tienda.com'
-    });
-} );
 
 module.exports = app;
